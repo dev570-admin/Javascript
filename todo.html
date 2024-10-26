@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To Do</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", "sanserif";
+        box-sizing: border-box;
+      }
+      .container {
+        width: 100%;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #020e25, #4e085f);
+        padding: 10px;
+      }
+      .todo-app {
+        width: 100%;
+        max-width: 540px;
+        background: #fff;
+        margin: 100px auto 20px;
+        padding: 40px 30px 20px;
+        border-radius: 10px;
+      }
+      .todo-app h1 {
+        color: #002765;
+        
+        align-items: center;
+        margin-bottom: 20px;
+      }
+      .todo-app h1 img{
+        width:30px;
+        margin-left:10px;
+      }
+      .row{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #edeef0;
+        border-radius: 30px;
+        padding-left: 20px;
+        margin-bottom: 20px;
+      }
+      input{
+        flex: 1;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 10px;
+        font-weight: 14px;
+      }
+      button{
+        border: none;
+        outline: none;
+        padding: 16px 50px;
+        background: #ff5945;
+        color:#fff;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 40px;
+      }
+      ul li{
+            list-style: none;
+            font-size: 17px;
+            padding: 12px 8px 12px 50px;
+            user-select: none;
+            cursor:pointer;
+            position: relative;
+      }
+      ul li::before{
+        content: '';
+        position: absolute;
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+        /* background-image: url(img/checked.png); */
+        background-color: #d6dae1;
+        background-size: cover;
+        background-position: center;
+        top: 10px;
+        left: 3px;
+
+      }
+      ul li.checked::before{
+         background-image: url(img/checked.png); 
+       
+      }
+      ul li span{
+        position: absolute;
+        right: 0;
+        top: 10px;
+        width: 29px;
+        height: 40px;
+        font-size: 14px;
+        color:#555;
+        line-height: 40px;
+        
+        text-align: center;
+        border-radius: 50%;
+
+      }
+      ul li span:hover{
+        background-color: #adb0b4;
+        width: 40px;
+        height: auto;
+        text-align: center;
+      }
+     
+    
+    </style>
+  </head>
+  <body>
+    <!-- https://www.youtube.com/watch?v=G0jO8kUrg-I -->
+    <div class="container">
+      <div class="todo-app">
+            <h1>To Do Application <img src="img/todo.jpg" alt="" srcset=""></h1>
+           <div class="row"> 
+                <input type="text" id="input-box" placeholder="Add Your task" />
+                <button id="addtask" onclick="add_task()">Add</button>
+            </div>
+            <ul id="list-container"></ul>
+      </div>
+      
+    </div>
+  </body>
+  <script>
+    const inputbox = document.getElementById("input-box");
+    const listcontainer = document.getElementById("list-container");
+
+    // function add_task(){
+    //     if(inputbox.value ===''){
+
+    //         alert("you must write something");
+    //     }
+    //     else{
+    //         let li= document.createElement("li");
+    //         li.innerHTML=inputbox.value;
+    //         listcontainer.appendChild(li);
+    //     }
+    //     inputbox.value="";
+    // }
+
+    //-------------- using arow function -------------------
+
+    const add_task = () => {
+      if (inputbox.value === "") {
+        alert("you must write something");
+      } else {
+        let li = document.createElement("li");
+        li.innerHTML = inputbox.value;
+        listcontainer.appendChild(li);
+        let span = document.createElement("span");
+        span.innerHTML="&#10006;";
+        li.appendChild(span);
+
+      }
+      inputbox.value = "";
+      saveData();// calling saveData() from localStorage to save/show the updated data
+    };
+
+    // functionality for onclick task is checked /store in broweser and delete
+    
+    listcontainer.addEventListener("click",function(e){
+
+      if(e.target.tagName==="LI"){
+        e.target.classList.toggle("checked");
+
+        saveData();// calling saveData() from localStorage to save/show the updated data
+
+      }else if(e.target.tagName==="SPAN"){
+        e.target.parentElement.remove();
+        saveData();// calling saveData() from localStorage to save/show the New data
+      }
+      
+    },false );
+
+    // Save Data in  localStorage 
+
+    function saveData(){
+      // for saving data
+      localStorage.setItem("data", listcontainer.innerHTML );
+
+    }
+    function showTask(){
+        // for Showing Saved  data
+
+        listcontainer.innerHTML=localStorage.getItem("data");
+    }
+    showTask();
+  </script>
+</html>
